@@ -1,13 +1,16 @@
-import requests
-from bs4 import BeautifulSoup
-url = 'https://place.map.kakao.com/1622750377'
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
 
-response = requests.get(url)
+browser = webdriver.Firefox()
 
-if response.status_code == 200:
-    html = response.text
-    soup = BeautifulSoup(html, 'html.parser')
-    print(soup)
+browser.get("https://place.map.kakao.com/1622750377")
 
-else : 
-    print(response.status_code)
+elements = browser.find_elements(By.XPATH, '//span[@class = "txt_more"]')
+
+print(elements)
+print(type(elements))
+print(len(elements))
+
+for elem in elements:
+    print(elem.text)
