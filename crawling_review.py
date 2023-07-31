@@ -45,3 +45,11 @@ print(stars)
 stars_not_yet_parsed 리스트에서 맨 앞의 두개와 맨 뒤의 한개 별점을 리스트 슬라이싱으로 제거함 (리뷰와 상관없는 별점임)
 width: 100%; 형식에서 리스트 슬라이싱을 사용하여 숫자만 추출함
 '''
+
+comments = []
+for i, comment in enumerate(elements_comment):
+    comments.append(comment.text)
+'''
+댓글 리스트를 만듦
+-> 별점리스트의 i번째 element와 댓글리스트의 i번째 element가 대응됨
+'''
