@@ -25,10 +25,23 @@ xpath로 댓글들을 element list로 가져옴
 '''
 
 star_web_elemets =browser.find_elements(By.XPATH, "//span[@class = 'ico_star star_rate']/span");
-stars = []
+stars_not_yet_parsed = []
 for star in star_web_elemets:
-    stars.append(star.get_attribute("style"))
+    stars_not_yet_parsed.append(star.get_attribute("style"))
 '''
-xpath로 별점들을 element list로 가져옴
+xpath로 별점들을 star_web_elemets로 가져옴
 (아직 100, 80, 40 이런 식으로 표기됨)
+
+stars_not_yet_parsed: width: 100%;형식의 별점
+'''
+
+stars = []
+for i in stars_not_yet_parsed[2: -1]:
+    string_star = i[7:-2]
+    stars.append(int(string_star) // 20)
+
+print(stars)
+'''
+stars_not_yet_parsed 리스트에서 맨 앞의 두개와 맨 뒤의 한개 별점을 리스트 슬라이싱으로 제거함 (리뷰와 상관없는 별점임)
+width: 100%; 형식에서 리스트 슬라이싱을 사용하여 숫자만 추출함
 '''
