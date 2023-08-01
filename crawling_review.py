@@ -53,3 +53,30 @@ for i, comment in enumerate(elements_comment):
 댓글 리스트를 만듦
 -> 별점리스트의 i번째 element와 댓글리스트의 i번째 element가 대응됨
 '''
+
+import pandas as pd
+import re
+
+def text_cleaning(text):
+    hangul = re.compile('[^ ㄱ-ㅣ가-힣]+')
+    result = hangul.sub('', text)
+    return result
+
+
+df = pd.read_csv("review_data.csv")
+df["ko_text"] = df["review"].apply(lambda x: text_cleaning(x))
+
+df = df[df['ko_text'].str.len() > 0]
+#df.head()
+
+from konlpy.tag import Okt
+
+# konlpy라이브러리로 텍스트 데이터에서 형태소를 추출합니다.
+def get_pos(x):
+    tagger = Okt()
+    pos = tagger.pos(x)
+    pos = ['{}/{}'.format(word,tag) for word, tag in pos]
+    return pos
+
+result = get_pos(df['ko_text'].values[0])
+print(result)
