@@ -52,8 +52,16 @@ print("별점 갯수: ", len(stars))
 corpus로 만든 X(행렬)와  stars(list)로 모델을 학습한다
 '''
 
-def load_star_ratings():
-    pass
+def load_star_ratings() -> list:
+    with open("star_rate.pkl", "rb") as f:
+        try:
+            while True:
+                stars = pickle.load(f) #value는 list이다. list객체를 그대로 직렬화했음
+                
+        except EOFError:
+            print("파일 읽기 종료")
+
+    return stars
 
 def load_reviews():
     pass
