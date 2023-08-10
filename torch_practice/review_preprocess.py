@@ -63,5 +63,21 @@ def load_star_ratings() -> list:
 
     return stars
 
-def load_reviews():
-    pass
+def load_reviews() -> list:
+    review_list = []
+
+    with open("parsed_review_data.pkl", "rb") as f:
+        try:
+            while True:
+                value = pickle.load(f)
+                review = [] # 리뷰의 형태소를 요소로 갖는 리스트
+                for word in value: # word는 형태소 하나하나를 의미한다
+                    tmp = word.split("/")
+                    review.append(tmp[0])
+                
+                review_list.append(' '.join(review))
+                
+        except EOFError:
+            print("파일 읽기 종료")
+
+    return review_list
