@@ -56,7 +56,6 @@ def train(x_target, y_target, model, criterion, optimizer, num_epochs):
 
 #x_target = torch.tensor(X, dtype=torch.long)
 
-
 i = [[0, 1, 1],
      [2, 0, 2]]
 v =  [3, 4, 5]
@@ -64,6 +63,26 @@ s = torch.sparse_coo_tensor(i, v, (2, 3))
 print(s)
 print(s.to_dense())
 
+print("------------------------------")
+
+sparse_matrix_subset = X[2]
+
+print("타입: ", type(sparse_matrix_subset))
+print("쉐입: ", sparse_matrix_subset.shape)
+
+print("------------------------------")
+
+for i in range(0,3):
+    print("-----", i, "번째-----")
+    for j in X[i].indices:
+        print(X[i,j])
+
+for i in range(0,10):
+    tmp1 = X[i].indices # 유효 인덱스를 요소로 갖는 ndarray
+    tmp2 = [0] * len(X[i].indices) # 유효 인덱스 갯수와 같은 길이의 배열 만들기
+    tmp3 = [tmp2, list(tmp1)] # torch.sparse_coo_tensor() 의 파라미터 중 인덱스
+    print(tmp3)
+    # print("원래 sparse matrix: ", X[i]) # 1986인데 (0, 1932) 이런 shape이 나오는 이유는 뭘까
 
 '''loss_history, train_accuracy = train()
 print("손실 추이: ")
