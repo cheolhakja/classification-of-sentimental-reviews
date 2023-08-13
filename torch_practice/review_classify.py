@@ -72,17 +72,19 @@ print("쉐입: ", sparse_matrix_subset.shape)
 
 print("------------------------------")
 
-for i in range(0,3):
-    print("-----", i, "번째-----")
-    for j in X[i].indices:
-        print(X[i,j])
-
 for i in range(0,10):
+    subset = X[i]
     tmp1 = X[i].indices # 유효 인덱스를 요소로 갖는 ndarray
     tmp2 = [0] * len(X[i].indices) # 유효 인덱스 갯수와 같은 길이의 배열 만들기
     tmp3 = [tmp2, list(tmp1)] # torch.sparse_coo_tensor() 의 파라미터 중 인덱스
-    print(tmp3)
+    v = subset[subset.nonzero()].A[0] # torch.sparse_coo_tensor()의 파라미터 중 v
+    
+    result = torch.sparse_coo_tensor(tmp3, v, (1, X.shape[1]))
+
+    print(result)
+
     # print("원래 sparse matrix: ", X[i]) # 1986인데 (0, 1932) 이런 shape이 나오는 이유는 뭘까
+
 
 '''loss_history, train_accuracy = train()
 print("손실 추이: ")
