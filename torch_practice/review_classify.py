@@ -83,6 +83,10 @@ for i in range(0,10):
 
     print(result)
 
+    '''
+    <텐서의 nonzero 인덱스 및 그 값 vs 희소행렬의 nonzero 인덱스 및 그 값>을 비교하는 테스트 필요
+    '''
+
     # print("원래 sparse matrix: ", X[i]) # 1986인데 (0, 1932) 이런 shape이 나오는 이유는 뭘까
 
 
