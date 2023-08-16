@@ -83,6 +83,8 @@ for i in range(0,10):
 
     print(result)
 
+    
+
     '''
     <텐서의 nonzero 인덱스 및 그 값 vs 희소행렬의 nonzero 인덱스 및 그 값>을 비교하는 테스트 필요
     '''
@@ -97,3 +99,32 @@ for i in loss_history:
 print("잘 분류한 정도를 백분율로 나타냄: ")
 for i in train_accuracy:
     print(i)'''
+
+import scipy.sparse
+from torch import Tensor
+
+def test_tensor_and_matrix_same(a: scipy.sparse.csr_matrix, b: Tensor):
+    print(a.data)
+    non_zero_index = a.nonzero()
+    print(type(non_zero_index))
+    print(non_zero_index[0])
+    print(type(non_zero_index[0]))
+    print(a[0,371])
+    print(format(a[0,371], ".2f"))
+    print(type(format(a[0,371], ".2f"))) #string
+
+    # ---------- 위에는 sparse matrix에 대한 코드, 아래는 Tensor에 대한 코드 ----------
+
+    print(b[0, 371])
+    print(b[0, 371].item())
+    print(format(b[0, 371].item(), ".2f"))
+    print(format(a[0,371], ".2f") == format(b[0, 371].item(), ".2f"))
+
+
+t1 = X[0].indices # 유효 인덱스를 요소로 갖는 ndarray
+t2 = [0] * len(X[0].indices) # 유효 인덱스 갯수와 같은 길이의 배열 만들기
+t3 = [t2, list(t1)] # torch.sparse_coo_tensor() 의 파라미터 중 인덱스
+v = X[0][X[0].nonzero()].A[0] # torch.sparse_coo_tensor()의 파라미터 중 v
+
+test_tensor_and_matrix_same(X[0], torch.sparse_coo_tensor(t3, v, (1, X.shape[1])))
+
