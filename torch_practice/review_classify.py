@@ -1,6 +1,8 @@
 import review_preprocess
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
+import scipy.sparse
+from torch import Tensor
 
 star_ratings = review_preprocess.load_star_ratings()
 reviews = review_preprocess.load_reviews()
@@ -65,14 +67,11 @@ print(s.to_dense())
 
 print("------------------------------")
 
-sparse_matrix_subset = X[2]
+# print("원래 sparse matrix: ", X[i]) # 1986인데 (0, 1932) 이런 shape이 나오는 이유는 뭘까
 
-print("타입: ", type(sparse_matrix_subset))
-print("쉐입: ", sparse_matrix_subset.shape)
+tensor_list: list[Tensor] = [] 
 
-print("------------------------------")
-
-for i in range(0,10):
+for i in range(X.shape[0]):
     subset = X[i]
     tmp1 = X[i].indices # 유효 인덱스를 요소로 갖는 ndarray
     tmp2 = [0] * len(X[i].indices) # 유효 인덱스 갯수와 같은 길이의 배열 만들기
@@ -81,16 +80,7 @@ for i in range(0,10):
     
     result = torch.sparse_coo_tensor(tmp3, v, (1, X.shape[1]))
 
-    print(result)
-
-    
-
-    '''
-    <텐서의 nonzero 인덱스 및 그 값 vs 희소행렬의 nonzero 인덱스 및 그 값>을 비교하는 테스트 필요
-    '''
-
-    # print("원래 sparse matrix: ", X[i]) # 1986인데 (0, 1932) 이런 shape이 나오는 이유는 뭘까
-
+    tensor_list.append(result.to_dense()) # convert a PyTorch sparse_coo_tensor into a PyTorch dense tensor
 
 '''loss_history, train_accuracy = train()
 print("손실 추이: ")
@@ -100,8 +90,6 @@ print("잘 분류한 정도를 백분율로 나타냄: ")
 for i in train_accuracy:
     print(i)'''
 
-import scipy.sparse
-from torch import Tensor
 
 def test_tensor_and_matrix_same(a: scipy.sparse.csr_matrix, b: Tensor):
     print(a.data)
@@ -129,4 +117,18 @@ v = X[0][X[0].nonzero()].A[0] # torch.sparse_coo_tensor()의 파라미터 중 v
 test_tensor_and_matrix_same(X[0], torch.sparse_coo_tensor(t3, v, (1, X.shape[1])))
 '''테스트'''
 
+print("----------훈련----------")
+'''
+x_target: Tensor, (370, 1986)
+y_target: Tensor, (370,)
+'''
+
+x_target = tensor_list[0]
+
+for i in range(1, len(tensor_list)):
+    tmp = torch.cat((x_target, tensor_list[i]),0)
+    x_target = tmp
+    
+
+print(x_target.shape)
 
