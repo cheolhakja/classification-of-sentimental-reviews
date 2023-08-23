@@ -47,7 +47,7 @@ def train(x_target, y_target, model, criterion, optimizer, num_epochs):
       
     
     '''
-    할일) 훈련이 다 끝난 모델을 대상으로 테스트를 수행한다
+    할일 훈련이 다 끝난 모델을 대상으로 테스트를 수행한다
     
     y_test = model(x_test)
     '''
@@ -120,11 +120,13 @@ def test_tensor_and_matrix_same(a: scipy.sparse.csr_matrix, b: Tensor):
     print(format(b[0, 371].item(), ".2f"))
     print(format(a[0,371], ".2f") == format(b[0, 371].item(), ".2f"))
 
-
+'''테스트'''
 t1 = X[0].indices # 유효 인덱스를 요소로 갖는 ndarray
 t2 = [0] * len(X[0].indices) # 유효 인덱스 갯수와 같은 길이의 배열 만들기
 t3 = [t2, list(t1)] # torch.sparse_coo_tensor() 의 파라미터 중 인덱스
 v = X[0][X[0].nonzero()].A[0] # torch.sparse_coo_tensor()의 파라미터 중 v
 
 test_tensor_and_matrix_same(X[0], torch.sparse_coo_tensor(t3, v, (1, X.shape[1])))
+'''테스트'''
+
 
